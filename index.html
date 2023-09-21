@@ -26,6 +26,11 @@
     const width = 1700;
     const height = 600;
 
+    
+    const tooltip = d3.select('body')
+    .append('div')
+    .attr('id', 'tooltip')
+    .style('opacity', '0')
 
 
     const root = d3.hierarchy(dataset).sum((d) => d.value)
@@ -47,14 +52,15 @@
     .attr('id', 'description')
     .text('Top 95 movies to be in fact')
     
-    titleContainer.append('a')
-    .text('go here')
+    // titleContainer.append('a')
+    // .text('go here')
 
-    titleContainer.append('a')
-    .text('go here')
+    // titleContainer.append('a')
+    // .text('go here')
 
-    titleContainer.append('a')
-    .text('go here')
+    // titleContainer.append('a')
+    // .text('go here')
+    // .attr('href', '#kickstarter.html')
 
     const container = d3.select('body')
     .append('div')
@@ -87,6 +93,27 @@
     .attr('data-name', (d) => d.data.name)
     .attr('data-category', (d) => d.data.category)
     .attr('data-value', (d) => d.data.value)
+    .on('mouseover', function (event, d) {
+        const genre = d.data.category
+        const name = d.data.name
+        const value = d.data.value
+
+        tooltip.transition()
+        .duration(100)
+        .style('opacity', '0.9')
+        tooltip.html(`${name} - ${genre}<br>${value}`)
+        .attr('data-value', d.data.value)
+    })
+    .on('mousemove', function() {
+        tooltip.style('top', (event.pageY-90)+'px')
+        .style('left', (event.pageX)+'px')
+    })
+    .on('mouseout', function (event, d) { 
+        tooltip.transition()
+        .duration(200)
+        .style('opacity', '0')
+    })
+
     
     cell.selectAll('text')
     .data(root.leaves())
@@ -99,18 +126,19 @@
 
     const legendContainer = d3.select('body')
     .append('div')
+    .attr('class', 'legend-container')
 
     const legend = legendContainer.append('svg')
     .attr('id', 'legend')
     .attr('width', 600)
-    .attr('heigh', 900)
+    .attr('height', 500)
 
     legend.selectAll('rect')
     .data(genres)
     .enter()
     .append('rect')
-    .attr('x', (d, i) => i * 30)
-    .attr('y', (d, i) => i * 25 )
+    .attr('x', 0)
+    .attr('y', (d, i) => i * 25 + 30)
     .attr('width', 20)
     .attr('height', 20)
     .style('fill', (d) => colourScale(d))
@@ -120,10 +148,11 @@
     .data(genres)
     .enter()
     .append('text')
-    .attr('x', (d, i) => i * 30)
-    .attr('y', (d,i) => i * 20 + 16)
+    .attr('x', 30)
+    .attr('y', (d,i) => i * 25 + 45)
     .style('fill', (d) => colourScale(d))
     .text((d) => d)
+
 
 
 
@@ -152,7 +181,7 @@
 
 
 </script>
-<script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
+
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>

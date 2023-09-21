@@ -1,7 +1,6 @@
 html, body {
     width: 100%;
     height: 100%;
-    position: relative;
 }
 
 .container {
@@ -15,3 +14,27 @@ svg {
     display: block;
 }
 
+div {
+    margin: 0 auto;
+    text-align: center;
+    padding: 10px;
+}
+
+
+
+
+.legend-container {
+    height: 900;
+    width: 600;
+    margin: 0 auto;
+}
+
+
+#tooltip {
+    position: absolute;
+    color: white;
+    background-color: black;
+    padding: 3px;
+    border-radius: 5px;
+    text-align: left;
+}
