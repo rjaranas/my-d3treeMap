@@ -23,44 +23,22 @@
 
    function treeMap(dataset) {
 
-    const width = 1700;
+
+    const width = 1200;
     const height = 600;
 
-
-
     const root = d3.hierarchy(dataset).sum((d) => d.value)
+
+    console.log(dataset)
+
+    console.log(root)
+
+    console.log(root.leaves())
     
-    const genres = root.children.map((d) => d.data.name)
-
-    const colourScale = d3.scaleOrdinal()
-    .domain(genres)
-    .range(d3.schemeSet2)
-
-    const titleContainer = d3.select('body')
-    .append('div')
     
-    titleContainer.append('h2')
-    .attr('id', 'title')
-    .text('Movies and their Revenues')
-
-    titleContainer.append('h4')
-    .attr('id', 'description')
-    .text('Top 95 movies to be in fact')
-    
-    titleContainer.append('a')
-    .text('go here')
-
-    titleContainer.append('a')
-    .text('go here')
-
-    titleContainer.append('a')
-    .text('go here')
-
-    const container = d3.select('body')
-    .append('div')
-    .attr('id', 'my-svg')
-
-    const svg = container.append('svg')
+    const svg = d3.select('body')
+    .append('svg')
+    .attr('viewbox', [0, 0, width, height])
     .attr('width', width)
     .attr('height', height)
 
@@ -68,11 +46,24 @@
     .data(root.leaves())
     .enter()
     .append('g')
+    
 
+    
     d3.treemap()
     .size([width, height])
     .padding(1)
-    (root)
+    (root)  
+
+
+
+
+
+    // const colourScale = d3.scaleLinear()
+    // .domain([...comparison])
+    // .range()
+    const fader = (color) => d3.interpolateRgb(color, '#fff')(0.3);
+    const colourScale = d3.scaleOrdinal(d3.schemeCategory10.map(fader))
+
 
     cell.selectAll('rect')
     .data(root.leaves())
@@ -84,51 +75,15 @@
     .attr('height', (d) => d.y1 - d.y0)
     .attr('fill', (d) => colourScale(d.data.category))
     .attr('class', 'tile')
-    .attr('data-name', (d) => d.data.name)
-    .attr('data-category', (d) => d.data.category)
-    .attr('data-value', (d) => d.data.value)
-    
+
     cell.selectAll('text')
     .data(root.leaves())
     .enter()
     .append('text')
     .attr('x', (d) => d.x0+3)
     .attr('y', (d) => d.y0+20)
-    .attr('font-size', 11)
+    .attr('font-size', 12)
     .text((d) => d.data.name)
-
-    const legendContainer = d3.select('body')
-    .append('div')
-
-    const legend = legendContainer.append('svg')
-    .attr('id', 'legend')
-    .attr('width', 600)
-    .attr('heigh', 900)
-
-    legend.selectAll('rect')
-    .data(genres)
-    .enter()
-    .append('rect')
-    .attr('x', (d, i) => i * 30)
-    .attr('y', (d, i) => i * 25 )
-    .attr('width', 20)
-    .attr('height', 20)
-    .style('fill', (d) => colourScale(d))
-    .attr('class', 'legend-item')
-
-    legend.selectAll('text')
-    .data(genres)
-    .enter()
-    .append('text')
-    .attr('x', (d, i) => i * 30)
-    .attr('y', (d,i) => i * 20 + 16)
-    .style('fill', (d) => colourScale(d))
-    .text((d) => d)
-
-
-
-
-
 
 
 
@@ -152,7 +107,6 @@
 
 
 </script>
-<script src="https://cdn.freecodecamp.org/testable-projects-fcc/v1/bundle.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
 </body>
 </html>
