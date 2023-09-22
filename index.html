@@ -10,10 +10,6 @@
 <body>  
     
 
-    <!--    https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/kickstarter-funding-data.json
-            https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/movie-data.json
-            https://cdn.freecodecamp.org/testable-projects-fcc/data/tree_map/video-game-sales-data.json  -->
-
 <script type="module">
     import * as d3 from 'https://cdn.jsdelivr.net/npm/d3@7/+esm'
 
@@ -47,20 +43,31 @@
     titleContainer.append('h2')
     .attr('id', 'title')
     .text('Movies and their Revenues')
+    
 
     titleContainer.append('h4')
     .attr('id', 'description')
-    .text('Top 95 movies to be in fact')
+    .text('Highest movie sales')
     
-    // titleContainer.append('a')
-    // .text('go here')
+    titleContainer.append('a')
+    .text('Movie Sales')
+    .attr('href', 'index.html')
+    .attr('id', 'movies-data')
+    .style('text-decoration', 'none')
+    .style('pointer-events', 'none')
+    .style('color', 'red')
 
-    // titleContainer.append('a')
-    // .text('go here')
+    titleContainer.append('a')
+    .text('Video Game Sales')
+    .attr('href', 'video-games.html')
+    .attr('id', 'video-games')
+    .style('text-decoration', 'none')
 
-    // titleContainer.append('a')
-    // .text('go here')
-    // .attr('href', '#kickstarter.html')
+    titleContainer.append('a')
+    .text('Kickstarter Fundings')
+    .attr('href', 'kickstarter.html')
+    .attr('id', 'kickstarter')
+    .style('text-decoration', 'none')
 
     const container = d3.select('body')
     .append('div')
@@ -99,18 +106,18 @@
         const value = d.data.value
 
         tooltip.transition()
-        .duration(100)
+        .duration(50)
         .style('opacity', '0.9')
-        tooltip.html(`${name} - ${genre}<br>${value}`)
+        tooltip.html(`Name: ${name}<br>Category: ${genre}<br>Value: ${value}`)
         .attr('data-value', d.data.value)
     })
     .on('mousemove', function() {
-        tooltip.style('top', (event.pageY-90)+'px')
-        .style('left', (event.pageX)+'px')
+        tooltip.style('top', (event.pageY-50)+'px')
+        .style('left', (event.pageX+40)+'px')
     })
     .on('mouseout', function (event, d) { 
         tooltip.transition()
-        .duration(200)
+        .duration(100)
         .style('opacity', '0')
     })
 
@@ -133,12 +140,14 @@
     .attr('width', 600)
     .attr('height', 500)
 
+    const rows = Math.ceil(genres.length / 2)
+
     legend.selectAll('rect')
     .data(genres)
     .enter()
     .append('rect')
-    .attr('x', 0)
-    .attr('y', (d, i) => i * 25 + 30)
+    .attr('x', (d, i) => i < rows ? 0 : 120)
+    .attr('y', (d, i) => (i % rows) * 25 + 30)
     .attr('width', 20)
     .attr('height', 20)
     .style('fill', (d) => colourScale(d))
@@ -148,17 +157,10 @@
     .data(genres)
     .enter()
     .append('text')
-    .attr('x', 30)
-    .attr('y', (d,i) => i * 25 + 45)
+    .attr('x', (d, i) => i < rows ? 30 : 150)
+    .attr('y', (d, i) => (i % rows) * 25 + 45)
     .style('fill', (d) => colourScale(d))
     .text((d) => d)
-
-
-
-
-
-
-
 
 
 
